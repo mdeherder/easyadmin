@@ -29,13 +29,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
     /**
-     * The hashed password
+     * The hashed password.
      */
     #[ORM\Column]
     private ?string $password;
 
     /**
-     * The plain non-persisted password
+     * The plain non-persisted password.
      */
     private ?string $plainPassword;
 
@@ -61,6 +61,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->questions = new ArrayCollection();
         $this->answers = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->getFullName();
     }
 
     public function getId(): ?int
@@ -159,7 +164,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials()
     {
         // If you store any temporary, sensitive data on the user, clear it here
-         $this->plainPassword = null;
+        $this->plainPassword = null;
     }
 
     public function isEnabled(): bool
@@ -208,7 +213,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             return null;
         }
 
-        if (strpos($this->avatar, '/') !== false) {
+        if (false !== strpos($this->avatar, '/')) {
             return $this->avatar;
         }
 
