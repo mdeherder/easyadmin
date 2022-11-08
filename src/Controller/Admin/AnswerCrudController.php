@@ -24,7 +24,8 @@ class AnswerCrudController extends AbstractCrudController
         yield Field::new('answer')
             // ->setMaxLength(50)
         ;
-        yield IntegerField::new('votes');
+        yield IntegerField::new('votes')
+            ->setTemplatePath('admin/field/votes.html.twig');
         yield AssociationField::new('question')
             ->autocomplete()
             ->hideOnIndex()
