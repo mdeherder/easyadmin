@@ -2,12 +2,12 @@
 
 namespace App\Controller\Admin;
 
+use App\Easyadmin\VotesField;
 use App\Entity\Answer;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 
 class AnswerCrudController extends AbstractCrudController
 {
@@ -24,8 +24,7 @@ class AnswerCrudController extends AbstractCrudController
         yield Field::new('answer')
             // ->setMaxLength(50)
         ;
-        yield IntegerField::new('votes')
-            ->setTemplatePath('admin/field/votes.html.twig');
+        yield VotesField::new('votes', 'Total Votes');
         yield AssociationField::new('question')
             ->autocomplete()
             ->hideOnIndex()

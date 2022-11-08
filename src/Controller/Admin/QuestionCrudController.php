@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Easyadmin\VotesField;
 use App\Entity\Question;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -33,9 +34,7 @@ class QuestionCrudController extends AbstractCrudController
         yield TextareaField::new('question')
             ->hideOnIndex()
         ;
-        yield Field::new('votes', 'Total Votes')
-            ->setTextAlign('right')
-        ;
+        yield VotesField::new('votes', 'Total Votes');
         yield AssociationField::new('askedBy')
             ->autocomplete()
             ->formatValue(static function ($value, Question $question): ?string {
