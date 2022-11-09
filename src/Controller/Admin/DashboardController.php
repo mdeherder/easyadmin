@@ -74,6 +74,7 @@ class DashboardController extends AbstractDashboardController
             ->setDefaultSort([
                 'id' => 'DESC',
             ])
+            ->overrideTemplate('crud/field/id', 'admin/field/id_with_icon.html.twig')
         ;
     }
 
