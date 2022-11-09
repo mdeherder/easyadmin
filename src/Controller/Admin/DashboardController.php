@@ -26,14 +26,14 @@ class DashboardController extends AbstractDashboardController
 {
     public function __construct(
         private QuestionRepository $questionRepository,
-        private ChartBuilderInterface $chartBuilder
     ) {
     }
 
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin', name: 'admin')]
-    public function index(): Response
+    public function index(ChartBuilderInterface $chartBuilder = null): Response
     {
+        assert(null !== $chartBuilder);
         $latestQuestions = $this->questionRepository
             ->findLatest()
         ;
@@ -44,7 +44,7 @@ class DashboardController extends AbstractDashboardController
         return $this->render('admin/index.html.twig', [
             'latestQuestions' => $latestQuestions,
             'topVoted' => $topVoted,
-            'chart' => $this->createChar(),
+            'chart' => $this->createChar($chartBuilder),
         ]);
     }
 
@@ -103,9 +103,9 @@ class DashboardController extends AbstractDashboardController
         ;
     }
 
-    private function createChar(): Chart
+    private function createChar($chartBuilder): Chart
     {
-        $chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
+        $chart = $chartBuilder->createChart(Chart::TYPE_LINE);
         $chart->setData([
             'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
             'datasets' => [
