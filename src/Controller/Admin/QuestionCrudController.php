@@ -18,6 +18,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Factory\FilterFactory;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -40,12 +41,18 @@ class QuestionCrudController extends AbstractCrudController
         yield IdField::new('id')
             ->onlyOnIndex()
         ;
+        // yield FormField::addPanel('Basic Data')
+        //     ->collapsible()
+        // ;
+        yield FormField::addTab('Basic Data');
         yield TextField::new('slug')
             ->hideOnIndex()
             ->setFormTypeOption('disabled', Crud::PAGE_NEW !== $pageName)
+            ->setColumns(5)
         ;
         yield Field::new('name')
             ->setSortable(false)
+            ->setColumns(5)
         ;
         yield AssociationField::new('topic');
         yield TextareaField::new('question')
@@ -63,6 +70,15 @@ class QuestionCrudController extends AbstractCrudController
         ;
         yield VotesField::new('votes', 'Total Votes')
             ->setPermission('ROLE_SUPER_ADMIN')
+        ;
+        // yield FormField::addPanel('Details')
+        //     ->collapsible()
+        //     ->setIcon('fa fa-info')
+        //     ->setHelp('Additional Details')
+        // ;
+        yield FormField::addTab('Details')
+            ->setIcon('fa fa-info')
+            ->setHelp('Additional Details')
         ;
         yield AssociationField::new('askedBy')
             ->autocomplete()
