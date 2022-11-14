@@ -162,6 +162,13 @@ class QuestionCrudController extends AbstractCrudController
             )
             ->add(Crud::PAGE_DETAIL, $approveAction)
             ->add(Crud::PAGE_INDEX, $exportAction)
+            ->reorder(Crud::PAGE_DETAIL, [
+                'approve',
+                'view',
+                Action::EDIT,
+                Action::INDEX,
+                Action::DELETE,
+            ])
         ;
     }
 
