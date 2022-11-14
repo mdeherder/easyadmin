@@ -4,6 +4,8 @@ namespace App\Controller\Admin;
 
 use App\Easyadmin\VotesField;
 use App\Entity\Question;
+use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -74,6 +76,9 @@ class QuestionCrudController extends AbstractCrudController
         yield Field::new('createdAt')
             ->hideOnForm()
         ;
+        yield AssociationField::new('updatedBy')
+            ->onlyOnDetail()
+        ;
     }
 
     public function configureCrud(Crud $crud): Crud
@@ -106,5 +111,18 @@ class QuestionCrudController extends AbstractCrudController
             ->add('votes')
             ->add('name')
         ;
+    }
+
+    /**
+     * @param Question $entityInstance
+     */
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $user = $this->getUser();
+        if (!$user instanceof User) {
+            throw new \LogicException('Currently logged in user is not an instance of User?!');
+        }
+        $entityInstance->setUpdatedBy($user);
+        parent::updateEntity($entityManager, $entityInstance);
     }
 }
