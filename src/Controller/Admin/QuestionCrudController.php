@@ -93,6 +93,15 @@ class QuestionCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
+        $viewAction = function () {
+            return Action::new('view')
+                ->linkToUrl(function (Question $question) {
+                    return $this->generateUrl('app_question_show', [
+                        'slug' => $question->getSlug(),
+                    ]);
+                });
+        };
+
         return parent::configureActions($actions)
             ->update(Crud::PAGE_INDEX, Action::DELETE, static function (Action $action) {
                 $action->displayIf(static function (Question $question) {
@@ -110,6 +119,12 @@ class QuestionCrudController extends AbstractCrudController
             ->setPermission(Action::DELETE, 'ROLE_SUPER_ADMIN')
             ->setPermission(Action::BATCH_DELETE, 'ROLE_SUPER_ADMIN')
             ->disable(Action::BATCH_DELETE)
+            ->add(Action::INDEX, $viewAction())
+            ->add(Action::DETAIL, $viewAction()
+                ->addCssClass('btn btn-success')
+                ->setIcon('fa fa-eye')
+                ->setLabel('View on Site')
+            )
         ;
     }
 
